@@ -1,0 +1,34 @@
+on: push
+jobs:
+  deploy_aws_infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check out the source code
+        uses: actions/checkout@v2
+
+      - name: Install node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Install SAM
+        run: |
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+          test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+          test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+          test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
+          echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
+          brew tap aws/tap
+          brew install aws-sam-cli
+
+      - name: Build SAM project
+        run: sam build
+
+      - name: Deploy SAM project
+        run: sam deploy --no-fail-on-empty-changeset --no-confirm-changeset
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: eu-west-1
