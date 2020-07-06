@@ -1,6 +1,6 @@
 {
-    "name": "replaced-by-user-input",
-    "description": "replaced-by-user-input",
+    "name": "apis-in-aws-sam",
+    "description": "A demo of AWS SAM",
     "version": "0.0.1",
     "private": true,
     "dependencies": {},
