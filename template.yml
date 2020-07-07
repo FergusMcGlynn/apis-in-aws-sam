@@ -53,3 +53,5 @@ Outputs:
   fetchDataApi:
     Description: "API Gateway endpoint URL for Prod stage"
     Value: !Sub "https://${CoursesRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/courses/"
+
+# hi
