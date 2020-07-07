@@ -36,8 +36,20 @@ Resources:
           Properties:
             Path: '/courses'
             Method: get
+            RestApiId:
+              Ref: CoursesRestApi
+
+  CoursesRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      DefinitionBody:
+        'Fn::Transform':
+          Name: 'AWS::Include'
+          Parameters:
+            Location: ./openApiSpecification.yml
 
 Outputs:
   fetchDataApi:
     Description: "API Gateway endpoint URL for Prod stage"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/courses/"
+    Value: !Sub "https://${CoursesRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/courses/"
